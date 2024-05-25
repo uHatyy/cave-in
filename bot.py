@@ -91,8 +91,8 @@ async def mine(ctx, cave: discord.Option(int)):
                     PlayerItems["thulecite"] += 2
                     PlayerItems["gemG"] += 1
                     reward = "<:thulecite:1236496891533852694> 2 thulecite and <:gemG:1236494250149937162> a green gem!"
-            else:
-                pass
+        else:
+            pass
         json.dump(PlayerItems, open(PathToID, "w"))
         await ctx.respond("In cave " + str(cave) + ", you earned " + reward)
     else:
