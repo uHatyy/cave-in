@@ -92,7 +92,7 @@ async def mine(ctx, cave: discord.Option(int)):
                     PlayerItems["gemG"] += 1
                     reward = "<:thulecite:1236496891533852694> 2 thulecite and <:gemG:1236494250149937162> a green gem!"
         else:
-            OldItems = PlayerItems
+            OldItems = list(PlayerItems.values())
             RNG = random.randint(1, 100)
             if RNG < 51:
                 reps = 1
@@ -101,11 +101,11 @@ async def mine(ctx, cave: discord.Option(int)):
             else:
                 reps = 3
             for i in range(reps):
-                if randint(0, 1):
+                if random.randint(0, 1):
                     gemRNG = random.randint(1, 6)
                     if gemRNG == 1:
-                            PlayerItems["thulecite"] += 2
-                            PlayerItems["gemR"] += 1
+                        PlayerItems["thulecite"] += 2
+                        PlayerItems["gemR"] += 1
                     elif gemRNG == 2:
                         PlayerItems["thulecite"] += 2
                         PlayerItems["gemB"] += 1
@@ -124,9 +124,10 @@ async def mine(ctx, cave: discord.Option(int)):
                 else:
                     PlayerItems["thulecite"] += 4
             RuinsRewards = []
-            for item in PlayerItems:
-                RuinsRewards[item] = PlayerItems[item] - OldItems[item]
-            print(RuinsRewards)
+            item = 0
+            for i in OldItems:
+                RuinsRewards.append(list(PlayerItems.values())[item] - OldItems[item])
+                item += 1
         json.dump(PlayerItems, open(PathToID, "w"))
         await ctx.respond("In cave " + str(cave) + ", you earned " + reward)
     else:
