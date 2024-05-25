@@ -105,7 +105,7 @@ async def mine(ctx, cave: discord.Option(int)):
                     gemRNG = random.randint(1, 6)
                     if gemRNG == 1:
                             PlayerItems["thulecite"] += 2
-                                PlayerItems["gemR"] += 1
+                            PlayerItems["gemR"] += 1
                     elif gemRNG == 2:
                         PlayerItems["thulecite"] += 2
                         PlayerItems["gemB"] += 1
