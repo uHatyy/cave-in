@@ -128,6 +128,7 @@ async def mine(ctx, cave: discord.Option(int)):
             for i in OldItems:
                 RuinsRewards.append(list(PlayerItems.values())[item] - OldItems[item])
                 item += 1
+            reward = str(RuinsRewards[1]) + "<:thulecite:1236496891533852694> thulecite"
         json.dump(PlayerItems, open(PathToID, "w"))
         await ctx.respond("In cave " + str(cave) + ", you earned " + reward)
     else:
