@@ -21,6 +21,7 @@ async def setcave(ctx):
     while i <= 10:
        cavedata[i] = random.randint(1, 100)
        i += 1
+    cavedata[random.randint(0, 9)] = 101
     json.dump(cavedata, open('data/cavedata.json', "w"))       
     await ctx.respond("Done!") 
 
@@ -60,7 +61,7 @@ async def mine(ctx, cave: discord.Option(int)):
         elif roll < 95:
             reward = "<:gold:1236493246826414111> 20 gold!"
             PlayerItems["gold"] += 20
-        else:
+        elif roll < 101:
             if random.randint(0, 1):
                 PlayerItems["thulecite"] += 4
                 reward = "<:thulecite:1236496891533852694> 4 thulecite!"
@@ -90,6 +91,8 @@ async def mine(ctx, cave: discord.Option(int)):
                     PlayerItems["thulecite"] += 2
                     PlayerItems["gemG"] += 1
                     reward = "<:thulecite:1236496891533852694> 2 thulecite and <:gemG:1236494250149937162> a green gem!"
+            else:
+                
         json.dump(PlayerItems, open(PathToID, "w"))
         await ctx.respond("In cave " + str(cave) + ", you earned " + reward)
     else:
