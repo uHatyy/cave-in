@@ -129,8 +129,21 @@ async def mine(ctx, cave: discord.Option(int)):
                 RuinsRewards.append(list(PlayerItems.values())[item] - OldItems[item])
                 item += 1
             reward = str(RuinsRewards[1]) + "<:thulecite:1236496891533852694> thulecite"
+            def GemRewards(index, gem, emoji):
+                value = RuinsRewards[index]
+                if value != 0:
+                    return " and " + str(value) + " <:" + gem + ":" + str(emoji)  + "> "
+                else:
+                    return ""
+            reward = reward + GemRewards(2, "gemR", 1236494017055952958)
+            reward = reward + GemRewards(3, "gemB", 1236493950198485028)
+            reward = reward + GemRewards(4, "gemP", 1236494105631264858)
+            reward = reward + GemRewards(5, "gemO", 1236494152309542943)
+            reward = reward + GemRewards(6, "gemY", 1236494202687328366)
+            reward = reward + GemRewards(7, "gemG", 1236494250149937162)
+                
         json.dump(PlayerItems, open(PathToID, "w"))
-        await ctx.respond("In cave " + str(cave) + ", you earned " + reward)
+        await ctx.respond("In cave " + str(cave) + ", you earned " + reward + ".")
     else:
          await ctx.respond("Enter a cave number between 1 and 10")
 
@@ -152,9 +165,9 @@ async def stats(ctx, target: discord.User = None):
         statrespond = str(await (bot.fetch_user(statsuser))) + "'s items:"
         def getplayerdata(stat, emoji):
             if playerdata[stat] != 0:
-               return statrespond + "\n <:" + stat + ":" + str(emoji) + "> " + str(playerdata[stat]) + " " + stat 
+                return statrespond + "\n <:" + stat + ":" + str(emoji) + "> " + str(playerdata[stat]) + " " + stat 
             else:
-                 return statrespond
+                return statrespond
         statrespond = getplayerdata("gold", 1236493246826414111)
         statrespond = getplayerdata("thulecite", 1236496891533852694)
         statrespond = getplayerdata("gemR", 1236494017055952958)
@@ -162,7 +175,7 @@ async def stats(ctx, target: discord.User = None):
         statrespond = getplayerdata("gemP", 1236494105631264858)
         statrespond = getplayerdata("gemO", 1236494152309542943)
         statrespond = getplayerdata("gemY", 1236494202687328366)
-        statrespond = getplayerdata("gemG",1236494250149937162)
+        statrespond = getplayerdata("gemG", 1236494250149937162)
         await ctx.respond(statrespond)
     else:
         await ctx.respond("Invalid user or user hasnt participated in the game.")
