@@ -132,7 +132,7 @@ async def mine(ctx, cave: discord.Option(int)):
             def GemRewards(index, gem, emoji):
                 value = RuinsRewards[index]
                 if value != 0:
-                    return " and " + str(value) + " <:" + gem + ":" + str(emoji)  + "> "
+                    return " and " + str(value) + " <:" + gem + ":" + str(emoji)  + "> " + gem
                 else:
                     return ""
             reward = reward + GemRewards(2, "gemR", 1236494017055952958)
@@ -141,7 +141,6 @@ async def mine(ctx, cave: discord.Option(int)):
             reward = reward + GemRewards(5, "gemO", 1236494152309542943)
             reward = reward + GemRewards(6, "gemY", 1236494202687328366)
             reward = reward + GemRewards(7, "gemG", 1236494250149937162)
-                
         json.dump(PlayerItems, open(PathToID, "w"))
         await ctx.respond("In cave " + str(cave) + ", you earned " + reward + ".")
     else:
