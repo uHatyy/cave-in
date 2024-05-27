@@ -46,7 +46,9 @@ async def mine(ctx, cave: discord.Option(int)):
 
     if cave > 0 and cave < 11:
         roll = json.load(open("data/cavedata.json", "r"))[str(cave)]
-        if roll < 41:
+        if roll == 0:
+            reward = "The ruins have collapsed."
+        elif roll < 41:
             reward = "<:gold:1236493246826414111> 1 gold!"
             PlayerItems["gold"] += 1
         elif roll < 66:
@@ -145,8 +147,12 @@ async def mine(ctx, cave: discord.Option(int)):
             reward = reward + GemRewards(5, "orange gem", "<:gemO:1236494152309542943>")
             reward = reward + GemRewards(6, "yellow gem", "<:gemY:1236494202687328366>")
             reward = reward + GemRewards(7, "green gem", "<:gemG:1236494250149937162>")
+            if random.randint(0, 1):
+                pass
         json.dump(PlayerItems, open(PathToID, "w"))
-        await ctx.respond("In cave " + str(cave) + ", you earned " + reward + ".")
+        if reward != "The ruins have collapsed.":
+            reward = "In cave " + str(cave) + ", you earned " + reward + "."
+        await ctx.respond(reward)
     else:
          await ctx.respond("Enter a cave number between 1 and 10")
 
