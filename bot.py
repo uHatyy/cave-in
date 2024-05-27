@@ -21,6 +21,7 @@ async def setcave(ctx):
     while i <= 10:
        cavedata[i] = random.randint(1, 100)
        i += 1
+    cavedata[random.randint(0, 9)] = 101
     json.dump(cavedata, open('data/cavedata.json', "w"))       
     await ctx.respond("Done!") 
 
@@ -60,7 +61,7 @@ async def mine(ctx, cave: discord.Option(int)):
         elif roll < 95:
             reward = "<:gold:1236493246826414111> 20 gold!"
             PlayerItems["gold"] += 20
-        else:
+        elif roll < 101:
             if random.randint(0, 1):
                 PlayerItems["thulecite"] += 4
                 reward = "<:thulecite:1236496891533852694> 4 thulecite!"
@@ -90,8 +91,62 @@ async def mine(ctx, cave: discord.Option(int)):
                     PlayerItems["thulecite"] += 2
                     PlayerItems["gemG"] += 1
                     reward = "<:thulecite:1236496891533852694> 2 thulecite and <:gemG:1236494250149937162> a green gem!"
+        else:
+            OldItems = list(PlayerItems.values())
+            RNG = random.randint(1, 100)
+            if RNG < 51:
+                reps = 1
+            elif RNG < 86:
+                reps = 2
+            else:
+                reps = 3
+            for i in range(reps):
+                if random.randint(0, 1):
+                    gemRNG = random.randint(1, 6)
+                    if gemRNG == 1:
+                        PlayerItems["thulecite"] += 2
+                        PlayerItems["gemR"] += 1
+                    elif gemRNG == 2:
+                        PlayerItems["thulecite"] += 2
+                        PlayerItems["gemB"] += 1
+                    elif gemRNG == 3:
+                        PlayerItems["thulecite"] += 2
+                        PlayerItems["gemP"] += 1
+                    elif gemRNG == 4:
+                        PlayerItems["thulecite"] += 2
+                        PlayerItems["gemO"] += 1
+                    elif gemRNG == 5:
+                        PlayerItems["thulecite"] += 2
+                        PlayerItems["gemY"] += 1
+                    else:
+                        PlayerItems["thulecite"] += 2
+                        PlayerItems["gemG"] += 1
+                else:
+                    PlayerItems["thulecite"] += 4
+            RuinsRewards = []
+            item = 0
+            for i in OldItems:
+                RuinsRewards.append(list(PlayerItems.values())[item] - OldItems[item])
+                item += 1
+            reward = str(RuinsRewards[1]) + "<:thulecite:1236496891533852694> thulecite"
+            def GemRewards(index, gem, emoji):
+                value = RuinsRewards[index]
+                if value != 0:
+                    if value == 1:
+                        s = ""
+                    else:
+                        s = "s"
+                    return " and " + str(value) + " " + emoji + " " + gem + s
+                else:
+                    return ""
+            reward = reward + GemRewards(2, "red gem", "<:gemR:1236494017055952958>")
+            reward = reward + GemRewards(3, "blue gem", "<:gemB:1236493950198485028>")
+            reward = reward + GemRewards(4, "purple gem", "<:gemP:1236494105631264858>")
+            reward = reward + GemRewards(5, "orange gem", "<:gemO:1236494152309542943>")
+            reward = reward + GemRewards(6, "yellow gem", "<:gemY:1236494202687328366>")
+            reward = reward + GemRewards(7, "green gem", "<:gemG:1236494250149937162>")
         json.dump(PlayerItems, open(PathToID, "w"))
-        await ctx.respond("In cave " + str(cave) + ", you earned " + reward)
+        await ctx.respond("In cave " + str(cave) + ", you earned " + reward + ".")
     else:
          await ctx.respond("Enter a cave number between 1 and 10")
 
@@ -101,7 +156,6 @@ async def stats(ctx, target: discord.User = None):
         statsuser = ctx.author.id
     else:
         statsuser = target._user.id
-
     try:
         playerdata = open("data/players/" + str(statsuser) + ".json", "r+").read()
     except:
@@ -114,9 +168,9 @@ async def stats(ctx, target: discord.User = None):
         statrespond = str(await (bot.fetch_user(statsuser))) + "'s items:"
         def getplayerdata(stat, emoji):
             if playerdata[stat] != 0:
-               return statrespond + "\n <:" + stat + ":" + str(emoji) + "> " + str(playerdata[stat]) + " " + stat 
+                return statrespond + "\n <:" + stat + ":" + str(emoji) + "> " + str(playerdata[stat]) + " " + stat 
             else:
-                 return statrespond
+                return statrespond
         statrespond = getplayerdata("gold", 1236493246826414111)
         statrespond = getplayerdata("thulecite", 1236496891533852694)
         statrespond = getplayerdata("gemR", 1236494017055952958)
@@ -124,7 +178,7 @@ async def stats(ctx, target: discord.User = None):
         statrespond = getplayerdata("gemP", 1236494105631264858)
         statrespond = getplayerdata("gemO", 1236494152309542943)
         statrespond = getplayerdata("gemY", 1236494202687328366)
-        statrespond = getplayerdata("gemG",1236494250149937162)
+        statrespond = getplayerdata("gemG", 1236494250149937162)
         await ctx.respond(statrespond)
     else:
         await ctx.respond("Invalid user or user hasnt participated in the game.")
