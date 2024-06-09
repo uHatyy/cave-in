@@ -190,6 +190,6 @@ async def stats(ctx, target: discord.User = None):
         statrespond = getplayerdata("gemG", 1236494250149937162)
         await ctx.respond(statrespond)
     else:
-        await ctx.respond("Invalid user or user hasnt participated in the game.")
+        await ctx.respond("Invalid user or user hasn't participated in the game.")
     
 bot.run(os.getenv('TOKEN'))
